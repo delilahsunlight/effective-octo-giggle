@@ -1,0 +1,29 @@
+{
+  "name": "ppbot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./dist/src/index.js",
+    "build": "tsc",
+    "test": "All test have passed"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "color-thief-jimp": "^2.0.2",
+    "discord.js": "^12.5.3",
+    "jimp": "^0.16.1",
+    "lodash": "^4.17.21",
+    "node-derpi": "^1.0.5",
+    "ontime": "0.0.8",
+    "tsc": "^2.0.3",
+    "typescript": "^4.4.4"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.175",
+    "@types/node": "^16.11.1",
+    "@types/ontime": "0.0.1"
+  }
+}
