@@ -1,16 +1,15 @@
-import { MessageEmbed } from "discord.js";
 import { getRandomImage } from "./derpiInfo";
 import { embedImage } from "./embed";
 import * as ontime from 'ontime';
-import { Image } from "node-derpi";
+import { Image, WebHookData } from "./interfaces";
 import { sample } from "lodash";
 
-type SubscribeFunction = (embed: MessageEmbed, image: Image, query: string) => void;
+type SubscribeFunction = (embed: WebHookData, image: Image, query: string) => void;
 export class CreateImageDelivery { 
     private fns: SubscribeFunction [] = [];
 
     constructor(schedule: string[], private queries: string[], private filterID: number) {
-        (ontime as any).default({
+         (ontime as any).default({
             cycle: schedule
         }, async (ot: any) => {
             await this.doTask();
@@ -38,9 +37,9 @@ export class CreateImageDelivery {
         const query = sample(this.queries)!;
         const image = await getRandomImage(query, this.filterID);
         if (image) {
-            const embed = await embedImage(image);
+            const embed = embedImage(image);
             for (const fn of this.fns) {
-                fn(embed, image, query);
+               fn(embed, image, query);
             }
         } else {
             console.error(`Image was not found under query tags "${query}"`);

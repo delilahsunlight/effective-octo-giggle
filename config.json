@@ -1,7 +1,7 @@
  {
-    "TOKEN": "",
+    "WEBHOOKS": ["https://discord.com/api/webhooks/000000000000000000/token"],
     "QUERY": ["cute"],
-    "SCHEDULE": ["12:00:00", "24:00:00"],
+    "SCHEDULE": ["19:23:30", "22:00:00"],
     "CHANNEL_ID": "",
     "FILTER_ID": 56027
 }
