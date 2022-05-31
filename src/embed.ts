@@ -1,5 +1,5 @@
 import { Image, WebHookData } from './interfaces';
-const getImageIdUrl = (baseUrl: string, id: string | number) => `${baseUrl}/images/${id}`;
+const getImageIdUrl = (baseUrl: string, id: string | number) => `${baseUrl}images/${id}`;
 
 export function embedImage(url: string, icon: string, image: Image): WebHookData {
     const USERNAME_LIMIT = 80;
