@@ -1,25 +1,29 @@
 import { sample }  from 'lodash'
 import axios from 'axios';
 import { QueryResult, Image } from './interfaces';
-import { SEARCH_API } from './constants';
 import { existsSync, readFileSync, writeFile } from 'fs';
+import { url } from 'inspector';
+
+
+export const searchApi = (baseUrl: string) => `${baseUrl}api/v1/json/search/images`; 
+
 
 interface Queries {
     [key: string]: string | number;
 }
 
-const cache = new Set<number>();
+const cache = new Set<string>();
 const cacheClearSize = 1000;
 const maxRecursion = 10;
 const recursionWait = 1000;
 
-export async function getRandomImage(query: string, filterID: number, loop = 0): Promise<Image | undefined> {
+export async function getRandomImage(apiUrl: string, query: string, filterID: number, loop = 0): Promise<Image | undefined> {
     const queries: Queries = {};
     queries.q = query;
     queries.filter_id = filterID;
     queries.sf = "random";
     
-    const qurifiedUrl = appendQuery(SEARCH_API, queries)
+    const qurifiedUrl = appendQuery(searchApi(apiUrl), queries)
 
     const result = await axios.get<QueryResult>(qurifiedUrl);
     const images = result.data.images;
@@ -28,7 +32,9 @@ export async function getRandomImage(query: string, filterID: number, loop = 0):
         return undefined;
     }
 
-    const mapped  = images.filter(e => !cache.has(e.id));
+    const origin = (new URL(apiUrl)).origin
+    const getKey = (e: Image) => `${origin}${e.id.toString()}`
+    const mapped  = images.filter(e => !cache.has(getKey(e)));
     if (mapped.length === 0) {
         if (loop > maxRecursion) {
             return undefined;
@@ -36,7 +42,7 @@ export async function getRandomImage(query: string, filterID: number, loop = 0):
 
         return new Promise((resolve, reject) => {
             setTimeout(() => {
-                getRandomImage(query, filterID, ++loop).then(resolve).catch(reject);
+                getRandomImage(apiUrl, query, filterID, ++loop).then(resolve).catch(reject);
             }, recursionWait);
         });
     } 
@@ -48,7 +54,7 @@ export async function getRandomImage(query: string, filterID: number, loop = 0):
 
     const randomImage = sample(mapped);
     if (randomImage) {
-        cache.add(randomImage.id);
+        cache.add(getKey(randomImage));
         serialize();
         return randomImage;
     }
@@ -65,7 +71,7 @@ function appendQuery(url: string, queries: Queries) {
 const file = "./cache.json";
 
 function serialize() {
-    const data: number[] = [];
+    const data: string[] = [];
     cache.forEach((value) => {
         data.push(value);
     });
@@ -78,7 +84,7 @@ function serialize() {
 
 if (existsSync(file)) {
     const content = readFileSync(file, "utf-8");
-    const data: number[]= JSON.parse(content);
+    const data: string[]= JSON.parse(content);
     for (const key of data) {
         cache.add(key);
     }

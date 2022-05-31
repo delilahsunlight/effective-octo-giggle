@@ -1,7 +1,7 @@
-import { FAV_ICON, getImageIdUrl } from './constants';
 import { Image, WebHookData } from './interfaces';
+const getImageIdUrl = (baseUrl: string, id: string | number) => `${baseUrl}/images/${id}`;
 
-export function embedImage(image: Image): WebHookData {
+export function embedImage(url: string, icon: string, image: Image): WebHookData {
     const USERNAME_LIMIT = 80;
     let username = "Unknown artist";
     // data.username = "Unknown artist";
@@ -21,13 +21,13 @@ export function embedImage(image: Image): WebHookData {
     } 
 
     const content = [
-        `Post: <${getImageIdUrl(image.id)}>`,
+        `Post: <${getImageIdUrl(url, image.id)}>`,
         `Full: ${image.representations.full}`,
     ].join("\n");
   
     return { 
         username,
-        avatar_url: FAV_ICON,
+        avatar_url: icon,
         content,
     };
 }

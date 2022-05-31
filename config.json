@@ -1,7 +1,29 @@
  {
-    "WEBHOOKS": ["https://discord.com/api/webhooks/000000000000000000/token"],
-    "QUERY": ["cute"],
-    "SCHEDULE": ["19:23:30", "22:00:00"],
-    "CHANNEL_ID": "",
-    "FILTER_ID": 56027
+    "WEBHOOKS": ["https://ptb.discord.com/api/webhooks/000000000000000000/token"],
+    "SCHEDULE": ["22:00:00", "10:00:00"],
+
+    "SERVICES": [
+        {
+            "URL": "https://derpibooru.org/",
+            "ICON": "https://derpicdn.net/img/2018/10/5/1848628/thumb.jpg",
+            "SEND_RATE": 10,
+            "QUERIES": [
+                {
+                    "QUERY": "cute",
+                    "FILTER_ID": 56027
+                }
+            ]
+        },
+        {
+            "URL": "https://furbooru.org/",
+            "ICON": "https://en.wikifur.com/w/images/thumb/1/15/Furbooru-logo-2020-05.png/600px-Furbooru-logo-2020-05.png",
+            "SEND_RATE": 1,
+            "QUERIES": [
+                {
+                    "QUERY": "cute",
+                    "FILTER_ID": 34
+                }
+            ]
+        }
+    ]
 }

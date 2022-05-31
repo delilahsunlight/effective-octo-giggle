@@ -148,3 +148,23 @@ export interface Attachment {
     width?: number;
     ephemeral?: number;
 }
+
+export interface Config {
+    WEBHOOKS: string[],
+    SERVICES: QueryService[];
+    
+    SCHEDULE: string[],
+   
+}
+
+export interface QueryService {
+    ICON: string;
+    URL: string;
+    QUERIES: ServiceQuery[];
+    SEND_RATE: number;
+}
+
+export interface ServiceQuery {
+    QUERY: string;
+    FILTER_ID: number;
+}
